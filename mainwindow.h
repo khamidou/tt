@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <iostream>
 #include <QMainWindow>
 #include <QHBoxLayout>
 #include <QTableView>
@@ -23,8 +24,9 @@ public:
 private:
     Ui::MainWindow *ui;    
     QTabWidget *tabWidget;
-    TaskModel *table;
+    //TaskModel *table;
     QTableView *tableView;
+    QSqlRelationalTableModel *model;
 };
 
 #endif // MAINWINDOW_H

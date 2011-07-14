@@ -1,54 +1,48 @@
 #include "taskmodel.h"
 
-TaskModel::TaskModel(QObject *parent) : QAbstractTableModel(parent)
-{
+void initDb() {
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName(":memory:");
+    if (!db.open()) {
+            QMessageBox::critical(0, qApp->tr("Cannot open database"),
+                qApp->tr("Unable to establish a database connection.\n"
+                         "Click Cancel to exit."), QMessageBox::Cancel);
+    }
 
+    createDb();
 }
 
-QVariant TaskModel::data(const QModelIndex &index, int role) const
-{
-    if (!index.isValid())
-        return QVariant();
+bool createDb() {
+    QSqlQuery query;
+    query.exec("create table tasks (id integer primary key,"
+               "time_spent integer, description varchar(255),"
+               "category_id integer);");
 
-    if (index.row() >= 4 || index.row() < 0)
-        return QVariant();
-
-    if (role == Qt::DisplayRole) {
-        if (index.column() == 0)
-            return tr("gerard");
-        else if (index.column() == 1)
-            return tr("ho");
-        else if (index.column() == 2)
-            return tr("paf");
-        else if (index.column() == 3)
-            return tr("paf");
-    }
-    return QVariant();
+    query.exec("create table tasks_types (id integer primary key,"
+                       "type varchar(255));");
+    query.exec("insert into tasks_types values(1, 'Travail');");
+    query.exec("insert into tasks values(1, 1, 'Finir tt', 1)");
+    return true;
 }
 
-QVariant TaskModel::headerData(int section, Qt::Orientation orientation, int role) const
-{
-    if (role != Qt::DisplayRole)
-        return QVariant();
+void initializeModel(QSqlRelationalTableModel *model)
+ {
+     model->setTable("tasks");
+     model->setEditStrategy(QSqlTableModel::OnManualSubmit);    
+     model->setRelation(3, QSqlRelation("tasks_types", "type", "Type"));
+     model->removeColumn(0);
+     model->setHeaderData(0, Qt::Horizontal, QObject::tr("Task"));
+     model->setHeaderData(1, Qt::Horizontal, QObject::tr("Time spent today"));
+     model->setHeaderData(2, Qt::Horizontal, QObject::tr("Category"));
+     bool t = model->insertColumn(2);
+     std::cout << t << std::endl;
 
-    if (orientation == Qt::Horizontal) {
-        switch (section) {
-            case 0:
-                return tr("Task");
+     model->setHeaderData(2, Qt::Horizontal, QObject::tr("Start counting"));
 
-            case 1:
-                return tr("Total time spent on this task");
+     model->select();
+ }
 
-            case 2:
-                return tr("Start counting");
-
-            case 3:
-                return tr("Category");
-
-
-            default:
-                return QVariant();
-        }
-    }
-    return QVariant();
+void closeDb() {
+    QSqlDatabase db = QSqlDatabase::database();
+    db.close();
 }

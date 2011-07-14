@@ -8,16 +8,18 @@ MainWindow::MainWindow(QWidget *parent) :
     setWindowTitle(tr("Task Tracker"));
     setMinimumSize(640, 480);
 
-    table = new TaskModel();
+    initDb();
+    model = new QSqlRelationalTableModel();
+    initializeModel(model);
+
     tableView = new QTableView();
     QPushButton *button = new QPushButton("yop");
 
     tabWidget->addTab(tableView, tr("Tasks"));
     tabWidget->addTab(button, tr("Stats"));
 
-
-    tableView->setModel(table);
     tableView->setItemDelegate(new TableDelegate());
+    tableView->setModel(model);
 
     tableView->resizeColumnsToContents();
     tableView->adjustSize();
@@ -32,5 +34,5 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
-
+    closeDb();
 }

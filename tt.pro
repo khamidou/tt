@@ -2,7 +2,7 @@
 # Project created by QtCreator 2011-06-25T14:16:34
 # -------------------------------------------------
 QT += network \
-    xml
+    xml sql
 TARGET = tt
 TEMPLATE = app
 SOURCES += main.cpp \

@@ -28,7 +28,7 @@ class TableDelegate : public QStyledItemDelegate
         void commitAndCloseEditor();
 
     private:
-        QSignalMapper *map; /* On en a besoin pour les boutons et les combobox */
+        QSignalMapper *signalMapper; /* Needed for the comboboxes and buttons */
     };
 
 #endif // TABLEDELEGATE_H
