@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <QMainWindow>
-#include <QHBoxLayout>
+#include <QSqlRelationalDelegate>
 #include <QTableView>
 #include <QHeaderView>
 #include <QTabWidget>

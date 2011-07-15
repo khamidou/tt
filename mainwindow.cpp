@@ -9,27 +9,28 @@ MainWindow::MainWindow(QWidget *parent) :
     setMinimumSize(640, 480);
 
     initDb();
-    model = new QSqlRelationalTableModel();
+    model = new QSqlRelationalTableModel(this);
     initializeModel(model);
 
-    tableView = new QTableView();
+    tableView = new QTableView;
     QPushButton *button = new QPushButton("yop");
 
     tabWidget->addTab(tableView, tr("Tasks"));
     tabWidget->addTab(button, tr("Stats"));
 
-    tableView->setItemDelegate(new TableDelegate());
+    tableView->setItemDelegate(new QSqlRelationalDelegate());
     tableView->setModel(model);
+
+    tableView->hideColumn(0);
 
     tableView->resizeColumnsToContents();
     tableView->adjustSize();
+    tableView->horizontalHeader()->moveSection(2, 0);
     tableView->horizontalHeader()->resizeSections(QHeaderView::ResizeToContents);
     tableView->horizontalHeader()->setStretchLastSection(true);
 
-    //tableView->setIndexWidget();
+   // tableView->setIndexWidget();
     setCentralWidget(tabWidget);
-
-
 }
 
 MainWindow::~MainWindow()
