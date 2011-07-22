@@ -2,18 +2,12 @@
 #define MAINWINDOW_H
 
 #include <iostream>
-#include <QMainWindow>
-#include <QSqlRelationalDelegate>
-#include <QTableView>
-#include <QHeaderView>
-#include <QTabWidget>
-#include <QPushButton>
+#include <QtGui>
+#include <QtSql>
+//#include <QSqlRelationalDelegate>
 #include "taskmodel.h"
 #include "tabledelegate.h"
 
-namespace Ui {
-    class MainWindow;
-}
 
 class MainWindow : public QMainWindow {
     Q_OBJECT
@@ -21,12 +15,19 @@ public:
     MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+public slots:
+    void insertRow();
+
 private:
-    Ui::MainWindow *ui;    
+    void setUpTableView();
+    void createActions();
+    void createToolbar();
+
     QTabWidget *tabWidget;
-    //TaskModel *table;
     QTableView *tableView;
     QSqlRelationalTableModel *model;
+    QAction *newEntry;    
+    QToolBar *toolBar;
 };
 
 #endif // MAINWINDOW_H

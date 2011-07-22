@@ -19,7 +19,7 @@ bool createDb() {
                "time_spent integer, description varchar(255),"
                "category_id integer);");
 
-   query.exec("insert into tasks_types values(1, 'Travail');");
+    query.exec("insert into tasks_types values(1, 'Travail');");
     query.exec("insert into tasks values(1, 1, 'Finir tt', 1)");
     query.exec("insert into tasks values(2, 2, 'Ecrire la doc', 1)");
     query.exec("insert into tasks values(3, 2, 'Acheter du pain', 1)");
@@ -31,8 +31,8 @@ void initializeModel(QSqlRelationalTableModel *model)
  {
  
      model->setTable("tasks");
-     model->setEditStrategy(QSqlTableModel::OnManualSubmit);
-     //model->setSort(0, Qt::AscendingOrder);
+     model->setEditStrategy(QSqlTableModel::OnFieldChange);
+     model->setSort(0, Qt::AscendingOrder);
      model->setRelation(3, QSqlRelation("tasks_types", "id", "type"));
 
      model->setHeaderData(2, Qt::Horizontal, QObject::tr("Task"));
@@ -40,9 +40,6 @@ void initializeModel(QSqlRelationalTableModel *model)
      model->setHeaderData(3, Qt::Horizontal, QObject::tr("Category"));
 
      model->select();
-
-     QString t2 = model->record(1).field(0).value().toString();
-     qDebug() << t2;
  }
 
 void closeDb() {
