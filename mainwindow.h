@@ -17,6 +17,7 @@ public:
 
 public slots:
     void insertRow();
+    void deleteRows();
 
 private:
     void setUpTableView();
@@ -26,7 +27,8 @@ private:
     QTabWidget *tabWidget;
     QTableView *tableView;
     QSqlRelationalTableModel *model;
-    QAction *newEntry;    
+    QAction *newEntry;
+    QAction *deleteEntry;
     QToolBar *toolBar;
 };
 

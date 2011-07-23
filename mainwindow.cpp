@@ -42,23 +42,46 @@ void MainWindow::createActions()
 {
     newEntry = new QAction(QIcon("./icons/new.png"), tr("&New"), this);
     newEntry->setShortcuts(QKeySequence::New);
-
+    newEntry->setStatusTip(tr("Create a new entry"));
     connect(newEntry, SIGNAL(triggered()), this, SLOT(insertRow()));
+
+    deleteEntry = new QAction(QIcon("./icons/delete.png"), tr("&Delete"), this);
+    newEntry->setShortcuts(QKeySequence::Delete);
+    connect(deleteEntry, SIGNAL(triggered()), this, SLOT(deleteRows()));
 }
 
 void MainWindow::createToolbar()
 {
     toolBar = addToolBar(tr("New"));
     toolBar->addAction(newEntry);
+    toolBar->addAction(deleteEntry);
 }
 
 void MainWindow::insertRow()
 {
+    qDebug() << "paf";
     QSqlQuery query;
 
     /* FIXME : don't hardcode field numbers */
     query.exec("insert into tasks(time_spent, description, category_id) values(1, 'Double-click to edit', 1);");
     model->select();
+}
+
+void MainWindow::deleteRows() {
+
+    QItemSelectionModel *selectionModel = tableView->selectionModel();
+    QModelIndexList indexes = selectionModel->selectedIndexes();
+
+    QModelIndex index;
+
+    foreach(index, indexes)   // loop through and remove them
+    {
+            int row = index.row();
+           model->removeRows(row, 1, QModelIndex());
+    }
+
+    model->select();
+    qDebug() << "ho";
 }
 
 MainWindow::~MainWindow()
