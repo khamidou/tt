@@ -2,20 +2,20 @@
 #define TABLEDELEGATE_H
 
 #include <QObject>
-#include <QStyledItemDelegate>
+#include <QSqlRelationalDelegate>
 #include <QComboBox>
 #include <QSignalMapper>
 
 
-class TableDelegate : public QStyledItemDelegate
+class TableDelegate : public  QSqlRelationalDelegate
 {
     Q_OBJECT
 
     public:
         TableDelegate(QWidget *parent = 0);
 
- /*       void paint(QPainter *painter, const QStyleOptionViewItem &option,
-                   const QModelIndex &index) const; */
+       void paint(QPainter *painter, const QStyleOptionViewItem &option,
+                   const QModelIndex &index) const;
         QSize sizeHint(const QStyleOptionViewItem &option,
                        const QModelIndex &index) const;
         QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option,

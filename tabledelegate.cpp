@@ -2,7 +2,7 @@
 #include <iostream>
 
 TableDelegate::TableDelegate(QWidget *parent) :
-    QStyledItemDelegate(parent)
+     QSqlRelationalDelegate(parent)
 {  
 }
 
@@ -20,17 +20,26 @@ QWidget *TableDelegate::createEditor(QWidget *parent,
 
         return lWidget;
     } else {
-        return QStyledItemDelegate::createEditor(parent, option, index);
+        return QSqlRelationalDelegate::createEditor(parent, option, index);
     }
 }
 
-/* FIXME: rendre propre
 void TableDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option,
            const QModelIndex &index) const
 {
+    if (index.column() == 2) { /*
+          StarRating starRating = qVariantValue<StarRating>(index.data());
 
+          if (option.state & QStyle::State_Selected)
+              painter->fillRect(option.rect, option.palette.highlight());
+
+          starRating.paint(painter, option.rect, option.palette,
+                           StarRating::ReadOnly);
+                           */
+      } else {
+          QSqlRelationalDelegate::paint(painter, option, index);
+      }
 }
-*/
 
 QSize TableDelegate::sizeHint(const QStyleOptionViewItem &option,
                const QModelIndex &index) const { }

@@ -16,7 +16,7 @@ MainWindow::MainWindow(QWidget *parent) :
     createActions();
     createToolbar();
 
-    setCentralWidget(tabWidget);
+    setCentralWidget(tabWidget);   
 }
 
 void MainWindow::setUpTableView()
@@ -36,6 +36,15 @@ void MainWindow::setUpTableView()
     tableView->horizontalHeader()->moveSection(2, 0);
     tableView->horizontalHeader()->resizeSections(QHeaderView::ResizeToContents);
     tableView->horizontalHeader()->setStretchLastSection(true);
+
+    /* Set up the widgets */
+    for(int i = 0; i < model->rowCount(); i++) {
+        QPushButton *b = new QPushButton(tr("Poussez moi !"), tableView);
+            tableView->setIndexWidget(model->index(i, 1), b);
+    }
+
+
+
 }
 
 void MainWindow::createActions()
@@ -58,8 +67,7 @@ void MainWindow::createToolbar()
 }
 
 void MainWindow::insertRow()
-{
-    qDebug() << "paf";
+{   
     QSqlQuery query;
 
     /* FIXME : don't hardcode field numbers */
@@ -81,7 +89,6 @@ void MainWindow::deleteRows() {
     }
 
     model->select();
-    qDebug() << "ho";
 }
 
 MainWindow::~MainWindow()
